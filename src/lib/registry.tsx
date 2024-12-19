@@ -15,12 +15,15 @@ export default function StyledComponentsRegistry({
 
   useServerInsertedHTML(() => {
     const styles = styledComponentsStyleSheet.getStyleElement()
+    // Clear the tag to avoid duplicate styles
     styledComponentsStyleSheet.instance.clearTag()
     return <>{styles}</>
   })
 
+  // If running in the browser, just return children
   if (typeof window !== 'undefined') return <>{children}</>
 
+  // Use StyleSheetManager to manage styles on the server
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       {children}
